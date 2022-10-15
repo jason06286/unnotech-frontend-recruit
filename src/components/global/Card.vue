@@ -34,8 +34,11 @@ defineProps({
 </template>
 <style scoped>
 .card {
-  @apply relative   h-[420px] w-full cursor-pointer rounded-lg bg-cover bg-center p-5 after:absolute after:inset-0 after:rounded-lg after:bg-gradient-to-br after:from-red-400 after:via-orange-400 after:to-orange-200 after:opacity-40 after:transition-all after:duration-200 even:after:from-blue-400 even:after:via-teal-500 even:after:to-teal-300 hover:after:opacity-60 xl:h-[350px];
+  @apply relative   h-[420px] w-full cursor-pointer rounded-lg bg-cover bg-center p-5 transition-all duration-200 after:absolute after:inset-0 after:rounded-lg after:bg-gradient-to-br after:from-red-400 after:via-orange-400 after:to-orange-200 
+   after:opacity-40 after:transition-all after:duration-300
+  even:after:from-blue-400 even:after:via-teal-500 even:after:to-teal-300 hover:bg-left-bottom hover:after:opacity-60 xl:h-[350px];
 }
+
 .border-odd {
   border-image: linear-gradient(45deg, #ffc271, #ff5f6d);
   border-image-slice: 1;

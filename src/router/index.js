@@ -9,6 +9,10 @@ const routes = [
     component: Home,
   },
   {
+    path: '/books/:id',
+    component: () => import('@/pages/id.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: {
       name: 'Home',

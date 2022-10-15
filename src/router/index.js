@@ -4,7 +4,7 @@ import Home from '@/pages/index.vue';
 
 const routes = [
   {
-    path: '/',
+    path: '/books',
     name: 'Home',
     component: Home,
   },

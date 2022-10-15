@@ -11,6 +11,7 @@ onMounted(async () => {
 });
 </script>
 <template>
+  <Navbar />
   <div>
     <Card />
   </div>

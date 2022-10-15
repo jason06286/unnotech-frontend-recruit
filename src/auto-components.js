@@ -6,6 +6,9 @@ import '@vue/runtime-core'
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Card: typeof import('./components/global/Card.vue')['default']
+    'Ic:baselineAdd': typeof import('~icons/ic/baseline-add')['default']
+    'Ic:baselineEdit': typeof import('~icons/ic/baseline-edit')['default']
+    Navbar: typeof import('./components/global/Navbar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

@@ -1,17 +1,27 @@
 <script setup>
 import { apiGetBooks } from '@/api';
+import useModal from '@/composables/useModal';
+
+const { isShowModal, showModal } = useModal();
 
 const booksData = ref([]);
 
-onMounted(async () => {
+const getData = async () => {
   const { data } = await apiGetBooks();
   booksData.value = data.sort((a, b) => b.id - a.id);
-  console.log('data :>> ', data);
-  console.log('booksData.value :>> ', booksData.value);
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'smooth',
+  });
+};
+
+onMounted(async () => {
+  getData();
 });
 </script>
 <template>
-  <Navbar />
+  <Navbar @show-modal="showModal" />
   <section class="mt-20">
     <div class="container m-auto">
       <div
@@ -26,5 +36,6 @@ onMounted(async () => {
       </div>
     </div>
   </section>
+  <Modal v-model="isShowModal" @get-data="getData" />
 </template>
 <style></style>

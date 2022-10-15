@@ -1,9 +1,10 @@
 <script setup>
+defineEmits(['showModal']);
+
 const route = useRoute();
 const {
   params: { id },
 } = route;
-console.log('id :>> ', id);
 </script>
 <template>
   <nav
@@ -16,6 +17,7 @@ console.log('id :>> ', id);
       v-if="id"
       type="button"
       class="flex items-center px-3 font-bold text-blue-600 hover:text-blue-400"
+      @click="$emit('showModal')"
     >
       編輯書籍
       <ic:baseline-edit />
@@ -24,6 +26,7 @@ console.log('id :>> ', id);
       v-else
       type="button"
       class="flex items-center px-3 font-bold text-blue-600 hover:text-blue-400"
+      @click="$emit('showModal')"
     >
       新增書籍
       <ic:baseline-add />

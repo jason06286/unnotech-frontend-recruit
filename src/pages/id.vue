@@ -1,5 +1,8 @@
 <script setup>
 import { apiGetBook } from '@/api';
+import useModal from '@/composables/useModal';
+
+const { isShowModal, showModal } = useModal();
 
 const route = useRoute();
 const router = useRouter();
@@ -10,17 +13,21 @@ const {
 
 const bookData = ref([]);
 
-onMounted(async () => {
+const getData = async () => {
   try {
     const { data } = await apiGetBook(id);
     bookData.value = data;
   } catch (error) {
     router.push(`/books`);
   }
+};
+
+onMounted(async () => {
+  getData();
 });
 </script>
 <template>
-  <Navbar />
+  <Navbar @show-modal="showModal" />
   <section class="mt-20">
     <div class="container m-auto px-2">
       <div class="w-full rounded-md bg-yellow-50 p-5 md:m-auto md:w-[500px]">
@@ -39,5 +46,11 @@ onMounted(async () => {
       </div>
     </div>
   </section>
+  <Modal
+    v-model="isShowModal"
+    :data="bookData"
+    :status="'edit'"
+    @get-data="getData"
+  />
 </template>
 <style></style>

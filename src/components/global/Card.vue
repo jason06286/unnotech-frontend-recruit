@@ -23,11 +23,14 @@ defineProps({
     "
   >
     <div
-      class="flex h-full items-end border-8 border-transparent"
+      class="flex h-full flex-col justify-end border-8 border-transparent"
       :class="index % 2 === 0 ? `border-odd` : `border-even`"
     >
       <h2 class="z-10 p-5 text-2xl font-bold text-white">
         {{ data.title }}
+      </h2>
+      <h2 class="z-10 p-5 text-end text-xl font-bold text-gray-100">
+        {{ data.author }}
       </h2>
     </div>
   </router-link>

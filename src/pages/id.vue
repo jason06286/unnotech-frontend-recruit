@@ -8,7 +8,9 @@ console.log('id :>> ', id);
 <template>
   <Navbar />
   <div class="mt-20 text-white">
-    {{ id }}
+    <div class="container m-auto">
+      {{ id }}
+    </div>
   </div>
 </template>
 <style></style>

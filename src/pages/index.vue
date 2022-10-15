@@ -12,8 +12,21 @@ onMounted(async () => {
 </script>
 <template>
   <Navbar />
-  <div>
-    <Card />
+  <div class="mt-20">
+    <div class="container m-auto">
+      <section>
+        <div
+          class="m-5 grid grid-cols-1 md:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:ml-8 xl:grid-cols-4 xl:gap-5 2xl:grid-cols-5 2xl:gap-8"
+        >
+          <Card
+            v-for="(item, index) in booksData"
+            :key="item.id"
+            :data="item"
+            :index="index"
+          />
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 <style></style>

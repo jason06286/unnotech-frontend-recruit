@@ -1,4 +1,6 @@
 <script setup>
+import { useToast } from 'vue-toastification';
+
 import { apiEditBook, apiPostBook } from '@/api';
 
 import { VueFinalModal, $vfm } from 'vue-final-modal';
@@ -17,11 +19,14 @@ const props = defineProps({
 });
 const emit = defineEmits(['getData']);
 
+const toast = useToast();
+
 const { errors, handleSubmit, resetForm } = useForm({
   validationSchema: bookSchema,
 });
 
 const isShowCancelModal = ref(false);
+
 const { value: title } = useField('title');
 const { value: author } = useField('author');
 const description = ref('');
@@ -46,6 +51,17 @@ const closeModal = () => {
   $vfm.hideAll();
 };
 
+const isChangeForm = computed(() => {
+  if (
+    title.value === props.data.title &&
+    author.value === props.data.author &&
+    description.value === props.data.description
+  ) {
+    return false;
+  }
+  return true;
+});
+
 const onSubmit = handleSubmit(async () => {
   const submitObj = {
     title: title.value,
@@ -55,13 +71,15 @@ const onSubmit = handleSubmit(async () => {
   try {
     if (props.status === 'add') {
       await apiPostBook(submitObj);
+      toast.success('新增書籍成功!');
     } else {
       await apiEditBook(props.data.id, submitObj);
+      toast.success('編輯書籍成功!');
     }
     closeModal();
     emit('getData');
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
   }
 });
 
@@ -81,41 +99,46 @@ watchEffect(() => {
       class="absolute top-0 right-0 mt-2 mr-2"
       @click="isShowCancelModal = true"
     >
-      <mdi-close class="text-red-800"></mdi-close>
+      <mdi-close class="text-gray-400"></mdi-close>
     </button>
     <div class="w-[280px] p-1 sm:w-[500px]">
       <span class="mr-8 text-2xl font-bold">
         <h2>{{ status === 'add' ? '新增' : '編輯' }}書籍</h2>
       </span>
 
-      <form class="flex-grow overflow-y-auto px-3" @submit="onSubmit">
+      <form
+        class="flex-grow overflow-y-auto px-3 text-gray-400"
+        @submit="onSubmit"
+      >
         <div class="mb-2">
-          <label for="title" class="mb-2 block">名稱</label>
+          <label
+            for="title"
+            class="mb-2 block"
+            :class="errors.title ? 'text-red-700' : 'text-gray-400'"
+            >名稱</label
+          >
           <input
             id="title"
             v-model.trim="title"
             type="text"
             class="w-full rounded-md border-2 bg-transparent p-2 outline-none focus:border-blue-400"
-            :class="
-              errors.title
-                ? 'border-red-700 text-red-700'
-                : 'border-gray-400 text-gray-400'
-            "
+            :class="errors.title ? 'border-red-700 ' : 'border-gray-400 '"
           />
           <p class="mt-2 text-sm text-red-800">{{ errors.title }}</p>
         </div>
         <div class="mb-2">
-          <label for="author" class="mb-2 block">作者</label>
+          <label
+            for="author"
+            class="mb-2 block"
+            :class="errors.author ? 'text-red-700' : 'text-gray-400'"
+            >作者</label
+          >
           <input
             id="author"
             v-model.trim="author"
             type="text"
             class="w-full rounded-md border-2 bg-transparent p-2 outline-none focus:border-blue-400"
-            :class="
-              errors.author
-                ? 'border-red-700 text-red-700'
-                : 'border-gray-400 text-gray-400'
-            "
+            :class="errors.author ? 'border-red-700 ' : 'border-gray-400 '"
           />
           <p class="mt-2 text-sm text-red-800">{{ errors.author }}</p>
         </div>
@@ -131,7 +154,13 @@ watchEffect(() => {
           <button type="button" class="cancel-btn mr-3 bg-red-900/50">
             取消
           </button>
-          <button type="submit" class="confirm-btn bg-blue-900/50">確認</button>
+          <button
+            type="submit"
+            class="confirm-btn bg-blue-900/50"
+            :disabled="!isChangeForm"
+          >
+            確認
+          </button>
         </div>
       </form>
     </div>
@@ -166,13 +195,13 @@ watchEffect(() => {
       class="absolute top-0 right-0 mt-2 mr-2"
       @click="isShowCancelModal = false"
     >
-      <mdi-close class="text-red-800"></mdi-close>
+      <mdi-close class="text-gray-400"></mdi-close>
     </button>
   </vue-final-modal>
 </template>
 <style>
 .confirm-btn {
-  @apply flex cursor-pointer items-center justify-center rounded-md border border-gray-400 bg-blue-900/50 px-1 py-1 text-sm font-bold text-gray-300 shadow-md shadow-blue-900 transition-all duration-200 hover:bg-blue-400/50 hover:shadow-black sm:px-3 sm:py-2 sm:text-base;
+  @apply flex cursor-pointer items-center justify-center rounded-md border border-gray-400 bg-blue-900/50 px-1 py-1 text-sm font-bold text-gray-300 shadow-md shadow-blue-900 transition-all duration-200 hover:bg-blue-400/50 hover:shadow-black disabled:bg-gray-500 sm:px-3 sm:py-2 sm:text-base;
 }
 .cancel-btn {
   @apply flex cursor-pointer items-center justify-center rounded-md border border-gray-400 bg-red-900/50 px-1 py-1 text-sm font-bold text-gray-300 shadow-md shadow-red-900 transition-all duration-200 hover:bg-red-400/50 hover:shadow-black sm:px-3 sm:py-2 sm:text-base;

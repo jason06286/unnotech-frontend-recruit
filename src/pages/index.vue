@@ -7,13 +7,17 @@ const { isShowModal, showModal } = useModal();
 const booksData = ref([]);
 
 const getData = async () => {
-  const { data } = await apiGetBooks();
-  booksData.value = data.sort((a, b) => b.id - a.id);
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: 'smooth',
-  });
+  try {
+    const { data } = await apiGetBooks();
+    booksData.value = data.sort((a, b) => b.id - a.id);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  } catch (error) {
+    console.error(error.message);
+  }
 };
 
 onMounted(async () => {

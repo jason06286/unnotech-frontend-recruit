@@ -7,20 +7,24 @@ const { isShowModal, showModal } = useModal();
 const route = useRoute();
 const router = useRouter();
 
-const {
-  params: { id },
-} = route;
-
 const bookData = ref([]);
 
 const getData = async () => {
   try {
-    const { data } = await apiGetBook(id);
+    const { data } = await apiGetBook(route.params.id);
     bookData.value = data;
   } catch (error) {
+    console.error(error.message);
     router.push(`/books`);
   }
 };
+
+watch(
+  () => route.params.id,
+  () => {
+    getData();
+  }
+);
 
 onMounted(async () => {
   getData();

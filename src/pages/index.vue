@@ -19,6 +19,7 @@ const getData = async () => {
   try {
     const { data } = await apiGetBooks();
     booksData.value = data.sort((a, b) => b.id - a.id);
+    calcDisplay();
     list.value.scrollToIndex(0);
   } catch (error) {
     console.error(error.message);
@@ -27,7 +28,6 @@ const getData = async () => {
 
 onMounted(async () => {
   await getData();
-  calcDisplay();
 });
 </script>
 <template>

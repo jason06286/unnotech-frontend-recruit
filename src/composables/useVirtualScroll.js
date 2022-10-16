@@ -50,7 +50,11 @@ export default function useVirtualScroll(booksData, displayData) {
     if (displayDataLen === booksDataLen) {
       return;
     }
-    isLoading.value = true;
+    if (!displayData.value.length) {
+      isLoading.value = false;
+    } else {
+      isLoading.value = true;
+    }
     if (total >= booksDataLen) {
       total = booksDataLen;
     }
